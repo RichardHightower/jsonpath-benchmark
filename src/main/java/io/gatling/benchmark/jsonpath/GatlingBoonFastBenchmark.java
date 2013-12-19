@@ -12,18 +12,17 @@ import org.boon.json.JsonParser;
 import org.boon.json.JsonParserFactory;
 import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.logic.BlackHole;
 
-import scala.collection.Iterator;
-
 @OutputTimeUnit(TimeUnit.SECONDS)
-public class GatlingBoonLazyChopForJsonPathBenchmark {
+@State
+public class GatlingBoonFastBenchmark {
 
-	private static final JsonParser JSON_PARSER = new JsonParserFactory().createJsonParserForJsonPath();
+	// thread local
+	private JsonParser jsonParser = new JsonParserFactory().createFastParser();
 
-	@State(Scope.Thread)
+	@State
 	public static class ThreadState {
 		private int i = -1;
 
@@ -37,7 +36,7 @@ public class GatlingBoonLazyChopForJsonPathBenchmark {
 
 	private Object parseCharsPrecompiled(BytesAndPath bytesAndPath) throws Exception {
 		char[] chars = getChars(new String(bytesAndPath.bytes, StandardCharsets.UTF_8));
-		Object json = JSON_PARSER.parse(Map.class, chars);
+		Object json = jsonParser.parse(Map.class, chars);
 		return bytesAndPath.path.query(json);
 	}
 
@@ -48,7 +47,8 @@ public class GatlingBoonLazyChopForJsonPathBenchmark {
 	}
 
 	private Object parseBytesPrecompiled(BytesAndPath bytesAndPath) throws Exception {
-		Object json = JSON_PARSER.parse(Map.class, bytesAndPath.bytes);
+		Object json = jsonParser.parse(Map.class, bytesAndPath.bytes);
+
 		return bytesAndPath.path.query(json);
 	}
 
@@ -57,14 +57,4 @@ public class GatlingBoonLazyChopForJsonPathBenchmark {
 		int i = state.next();
 		bh.consume(parseBytesPrecompiled(BYTES_AND_PATHS[i]));
 	}
-	
-	public static void main(String[] args) {
-		Object jsonObject = JSON_PARSER.parse(Map.class, BYTES_AND_PATHS[10].bytes);
-		Iterator<Object> it = BYTES_AND_PATHS[10].path.query(jsonObject);
-		
-		while (it.hasNext()) {
-			Object obj = it.next();
-			System.err.println(obj);
-		}
-    }
 }

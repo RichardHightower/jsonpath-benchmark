@@ -2,23 +2,25 @@ package io.gatling.benchmark.jsonpath;
 
 import static io.gatling.benchmark.jsonpath.GatlingJacksonBenchmark.*;
 import static io.gatling.benchmark.util.UnsafeUtil.*;
-import io.gatling.benchmark.jsonpath.GatlingJacksonBenchmark.BytesAndPath;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.boon.json.JsonParser;
 import org.boon.json.JsonParserFactory;
 import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.logic.BlackHole;
 
 @OutputTimeUnit(TimeUnit.SECONDS)
-public class GatlingBoonBenchmark {
+@State
+public class GatlingBoonJsonParserForJsonPathBenchmark {
 
-	@State(Scope.Thread)
+	private final JsonParser jsonParser = new JsonParserFactory().createJsonParserForJsonPath();
+
+	@State
 	public static class ThreadState {
 		private int i = -1;
 
@@ -30,9 +32,9 @@ public class GatlingBoonBenchmark {
 		}
 	}
 
-	private Object parseCharsPrecompiled(BytesAndPath bytesAndPath) throws Exception {
+	private Object parseCharsPrecompiled(GatlingJacksonBenchmark.BytesAndPath bytesAndPath) throws Exception {
 		char[] chars = getChars(new String(bytesAndPath.bytes, StandardCharsets.UTF_8));
-		Object json = new JsonParserFactory().setCharset(StandardCharsets.UTF_8).create().parse(Map.class, chars);
+		Object json = jsonParser.parse(Map.class, chars);
 		return bytesAndPath.path.query(json);
 	}
 
@@ -41,9 +43,10 @@ public class GatlingBoonBenchmark {
 		int i = state.next();
 		bh.consume(parseCharsPrecompiled(BYTES_AND_PATHS[i]));
 	}
-	
-	private Object parseBytesPrecompiled(BytesAndPath bytesAndPath) throws Exception {
-		Object json = new JsonParserFactory().setCharset(StandardCharsets.UTF_8).create().parse(Map.class, bytesAndPath.bytes);
+
+	private Object parseBytesPrecompiled(GatlingJacksonBenchmark.BytesAndPath bytesAndPath) throws Exception {
+		Object json = jsonParser.parse(Map.class, bytesAndPath.bytes);
+
 		return bytesAndPath.path.query(json);
 	}
 

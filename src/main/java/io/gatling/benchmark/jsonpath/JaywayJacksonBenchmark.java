@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.logic.BlackHole;
 
@@ -56,7 +55,7 @@ public class JaywayJacksonBenchmark {
 	new BytesAndPath(TWENTY_K_BYTES, JsonPath.compile(TWENTY_K_PATH3)) /**/
 	};
 
-	@State(Scope.Thread)
+	@State
 	public static class ThreadState {
 		private int i = -1;
 

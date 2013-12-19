@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.logic.BlackHole;
 
@@ -61,7 +60,7 @@ public class GatlingJacksonBenchmark {
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-	@State(Scope.Thread)
+	@State
 	public static class ThreadState {
 		private int i = -1;
 

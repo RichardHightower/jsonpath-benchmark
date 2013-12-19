@@ -10,14 +10,13 @@ import net.minidev.json.parser.JSONParser;
 
 import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.logic.BlackHole;
 
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class GatlingJsonSmartBenchmark {
 
-	@State(Scope.Thread)
+	@State
 	public static class ThreadState {
 		private int i = -1;
 
