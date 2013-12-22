@@ -1,13 +1,13 @@
 package io.gatling.benchmark.jsonpath;
 
 import static io.gatling.benchmark.jsonpath.GatlingJacksonBenchmark.*;
-import static io.gatling.benchmark.util.UnsafeUtil.*;
 import io.gatling.benchmark.jsonpath.GatlingJacksonBenchmark.BytesAndPath;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.boon.json.JsonParser;
 import org.boon.json.JsonParserFactory;
 import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
@@ -16,7 +16,10 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.logic.BlackHole;
 
 @OutputTimeUnit(TimeUnit.SECONDS)
+@State
 public class GatlingBoonBenchmark {
+
+    JsonParser jsonParser = new JsonParserFactory().createJsonParserForJsonPath ();
 
 	@State(Scope.Thread)
 	public static class ThreadState {
@@ -31,8 +34,8 @@ public class GatlingBoonBenchmark {
 	}
 
 	private Object parseCharsPrecompiled(BytesAndPath bytesAndPath) throws Exception {
-		char[] chars = getChars(new String(bytesAndPath.bytes, StandardCharsets.UTF_8));
-		Object json = new JsonParserFactory().setCharset(StandardCharsets.UTF_8).create().parse(Map.class, chars);
+		Object json =
+                jsonParser.parse(Map.class, new String(bytesAndPath.bytes, StandardCharsets.UTF_8));
 		return bytesAndPath.path.query(json);
 	}
 
@@ -43,7 +46,8 @@ public class GatlingBoonBenchmark {
 	}
 	
 	private Object parseBytesPrecompiled(BytesAndPath bytesAndPath) throws Exception {
-		Object json = new JsonParserFactory().setCharset(StandardCharsets.UTF_8).create().parse(Map.class, bytesAndPath.bytes);
+		Object json =
+                jsonParser.parse ( Map.class, bytesAndPath.bytes );
 		return bytesAndPath.path.query(json);
 	}
 
