@@ -2,6 +2,60 @@ Independently verified. Boon is faster than Jackson.
 
 
 ```
+Benchmark                                                                        Mode Thr     Count  Sec         Mean   Mean error    Units
+
+Using lazy chop index overlay.
+Not using @State annotation
+i.g.b.j.GatlingBoonBenchmarkStateless.parseBytesPrecompiledRoundRobin           thrpt   8        10    1    72094.288    10208.964    ops/s
+i.g.b.j.GatlingBoonBenchmarkStateless.parseCharsPrecompiledRoundRobin           thrpt   8        10    1    79101.923     7532.966    ops/s
+
+Using @State
+i.g.b.j.GatlingBoonBenchmark.parseBytesPrecompiledRoundRobin                    thrpt   8        10    1    76915.182    10753.667    ops/s
+i.g.b.j.GatlingBoonBenchmark.parseCharsPrecompiledRoundRobin                    thrpt   8        10    1    79035.477     9960.477    ops/s
+
+
+Not much difference in performance between using @State and not.
+
+
+Relaxed parser
+i.g.b.j.LazyBoonJsonPathBM.parseBytesPrecompiledRoundRobin                      thrpt   8        10    1    63660.090     5923.018    ops/s
+i.g.b.j.LazyBoonJsonPathBM.parseCharsPrecompiledRoundRobin                      thrpt   8        10    1    65405.292     8516.515    ops/s
+
+
+Normal parser with @State   (no overlay, eager parse everything)
+i.g.b.j.GatlingBoonBenchmarkClassic.parseBytesPrecompiledRoundRobin             thrpt   8        10    1    46178.225     6960.655    ops/s
+i.g.b.j.GatlingBoonBenchmarkClassic.parseCharsPrecompiledRoundRobin             thrpt   8        10    1    46557.547     4360.812    ops/s
+
+
+
+
+Normal parser no @State
+i.g.b.j.GatlingBoonBenchmarkClassicStateless.parseBytesPrecompiledRoundRobin    thrpt   8        10    1    47456.525     5540.102    ops/s
+i.g.b.j.GatlingBoonBenchmarkClassicStateless.parseCharsPrecompiledRoundRobin    thrpt   8        10    1    47659.658     4452.921    ops/s
+
+
+Stateless seems to be faster. (Jusing not adding @State)
+
+
+All Boon faster than Jackson, up to 2X faster
+i.g.b.j.GatlingJacksonBenchmark.parseBytesPrecompiledRoundRobin                 thrpt   8        10    1    38464.213     2832.844    ops/s
+i.g.b.j.GatlingJacksonBenchmark.parseStringPrecompiledRoundRobin                thrpt   8        10    1    30038.037     3332.587    ops/s
+
+
+All Boon faster than JsonSmart up to almost 3X faster
+i.g.b.j.GatlingJsonSmartBenchmark.parseStringPrecompiledRoundRobin              thrpt   8        10    1    28324.553     3314.263    ops/s
+
+
+All Boon faster than Jayway, up to 11.5X faster
+i.g.b.j.JaywayJacksonBenchmark.parseBytesPrecompiledRoundRobin                  thrpt   8        10    1     6031.133     1879.855    ops/s
+i.g.b.j.JaywayJacksonBenchmark.parseStringPrecompiledRoundRobin                 thrpt   8        10    1     4387.902     1435.856    ops/s
+```
+
+
+
+
+
+```
 
 Benchmark                                                              Mode Thr     Count  Sec         Mean   Mean error    Units
 i.g.b.j.GatlingBoonBenchmark.parseCharsPrecompiledRoundRobin          thrpt   8        20    1    80346.155     6540.265    ops/s
