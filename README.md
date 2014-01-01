@@ -2,6 +2,20 @@ Independently verified. Boon is faster than Jackson.
 
 
 ```
+
+Benchmark                                                              Mode Thr     Count  Sec         Mean   Mean error    Units
+i.g.b.j.GatlingBoonBenchmark.parseCharsPrecompiledRoundRobin          thrpt   8        20    1    80346.155     6540.265    ops/s
+i.g.b.j.GatlingBoonBenchmark.parseBytesPrecompiledRoundRobin          thrpt   8        20    1    77628.580     6633.424    ops/s
+i.g.b.j.LazyBoonJsonPathBM.parseBytesPrecompiledRoundRobin            thrpt   8        20    1    63530.264     5220.353    ops/s
+i.g.b.j.LazyBoonJsonPathBM.parseCharsPrecompiledRoundRobin            thrpt   8        20    1    67263.727     4400.878    ops/s
+i.g.b.j.GatlingJacksonBenchmark.parseBytesPrecompiledRoundRobin       thrpt   8        20    1    41076.498     3031.684    ops/s
+i.g.b.j.GatlingJacksonBenchmark.parseStringPrecompiledRoundRobin      thrpt   8        20    1    31354.957     3051.925    ops/s
+i.g.b.j.GatlingJsonSmartBenchmark.parseStringPrecompiledRoundRobin    thrpt   8        20    1    29585.277     1801.637    ops/s
+i.g.b.j.JaywayJacksonBenchmark.parseBytesPrecompiledRoundRobin        thrpt   8        20    1    17357.992     6662.890    ops/s
+i.g.b.j.JaywayJacksonBenchmark.parseStringPrecompiledRoundRobin       thrpt   8        20    1    13665.135     5635.213    ops/s
+```
+
+```
 Benchmark                                                              Mode Thr     Count  Sec         Mean   Mean error    Units
 i.g.b.j.GatlingBoonBenchmark.parseBytesPrecompiledRoundRobin          thrpt   8         6    1   125093.867     2447.914    ops/s
 i.g.b.j.GatlingBoonBenchmark.parseCharsPrecompiledRoundRobin          thrpt   8         6    1   117296.464     5713.760    ops/s

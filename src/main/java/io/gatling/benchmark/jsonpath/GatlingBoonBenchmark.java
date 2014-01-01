@@ -19,7 +19,7 @@ import org.openjdk.jmh.logic.BlackHole;
 @State
 public class GatlingBoonBenchmark {
 
-    JsonParser jsonParser = new JsonParserFactory().createJsonParserForJsonPath ();
+    JsonParser jsonParser = new JsonParserFactory().create ();
 
 	@State(Scope.Thread)
 	public static class ThreadState {
